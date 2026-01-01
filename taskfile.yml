@@ -74,6 +74,12 @@ tasks:
     desc: "Validate Terraform/OpenTofu configuration"
     cmds: [tofu validate]
 
+  tf:output:
+    silent: true
+    dir: terraform/environments
+    desc: "Initialize Terraform/OpenTofu with remote backend"
+    cmds: [tofu output]
+  
   tf:init:
     internal: true
     silent: true
