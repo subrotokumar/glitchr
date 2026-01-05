@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"log/slog"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -28,7 +27,6 @@ func NewIndentityProvider(region, clientId, clientSecret string) IdentityProvide
 		log.Fatal(err)
 	}
 	cognitoClient := cognitoidentityprovider.NewFromConfig(sdkConfig)
-	slog.Info("Cognito", "Id", clientId, "Secret", clientSecret)
 	return IdentityProvider{
 		CognitoClient: cognitoClient,
 		ClientId:      clientId,

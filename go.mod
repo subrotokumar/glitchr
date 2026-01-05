@@ -3,6 +3,7 @@ module gitlab.com/subrotokumar/glitchr
 go 1.25.5
 
 require (
+	github.com/MicahParks/keyfunc/v3 v3.7.0
 	github.com/aws/aws-sdk-go-v2 v1.41.0
 	github.com/aws/aws-sdk-go-v2/config v1.32.6
 	github.com/aws/aws-sdk-go-v2/service/cognitoidentityprovider v1.57.17
@@ -20,6 +21,7 @@ require (
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/MicahParks/jwkset v0.11.0 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.19.6 // indirect
