@@ -7,8 +7,9 @@ import (
 
 	validation "github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
-	"gitlab.com/subrotokumar/glitchr/internal/core"
+	"gitlab.com/subrotokumar/glitchr/internal/config"
 	idp "gitlab.com/subrotokumar/glitchr/pkg/idp"
+	"gitlab.com/subrotokumar/glitchr/pkg/logger"
 )
 
 const (
@@ -25,7 +26,7 @@ var (
 
 type (
 	Server struct {
-		cfg     core.Config
+		cfg     config.Config
 		idp     idp.IdentityProvider
 		handler *http.Server
 		log     *slog.Logger
@@ -38,12 +39,12 @@ type (
 func NewHTTPServer() *Server {
 	validator = validation.New(validation.WithRequiredStructEnabled())
 
-	cfg, err := core.ConfigFromEnv()
+	cfg, err := config.ConfigFromEnv()
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
 
-	logger := core.NewLogger(cfg.App.Env, cfg.App.Name, nil)
+	logger := logger.New(cfg.App.Env, cfg.App.Name, nil)
 
 	srv := &Server{
 		cfg: cfg,

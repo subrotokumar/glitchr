@@ -11,6 +11,22 @@ Copyright &copy; 2025 Subroto Kumar
 #   { "Markdown in 5min" = "markdown.md" },
 # ]
 
+nav = [
+    { "Overview" = "index.md" },
+    { "Architecture" = "architecture.md" },
+    { "Backend (Go)" = "backend.md" },
+    { "Mobile (Flutter)" = "mobile.md" },
+    { "Transcoding Pipeline" = "transcoding.md" },
+    { "Authentication & IAM" = "auth.md" },
+    { "Messaging (SQS)" = "messaging.md" },
+    { "Storage & CDN" = "storage-cdn.md" },
+    { "Data Layer" = "data.md" },
+    { "Infrastructure" = "infra.md" },
+    { "Local Development" = "local-dev.md" },
+    { "Operations" = "operations.md" },
+]
+
+
 #extra_css = ["stylesheets/extra.css"]
 #extra_javascript = ["javascripts/extra.js"]
 
@@ -20,7 +36,8 @@ Copyright &copy; 2025 Subroto Kumar
 
 #custom_dir = "overrides"
 
-#favicon = "images/favicon.png"
+favicon = "assets/logo.png"
+logo = "assets/logo.png"
 
 language = "en"
 

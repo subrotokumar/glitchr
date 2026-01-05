@@ -12,5 +12,11 @@ RUN go mod download
 
 COPY cmd/ .
 COPY internal/ .
+
+# Packages
+COPY pkg/core/ ./pkg/core/
+COPY pkg/idp/ ./pkg/idp/
+COPY pkg/logger/ ./pkg/logger/
+
 COPY .air.toml .
 CMD ["air"]

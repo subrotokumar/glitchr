@@ -1,26 +1,19 @@
-package core
+package config
 
 import (
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
+	"gitlab.com/subrotokumar/glitchr/pkg/core"
 	"gopkg.in/yaml.v2"
-)
-
-type Env string
-
-const (
-	EnvDevelopment Env = "dev"
-	EnvStaging     Env = "stage"
-	EnvProduction  Env = "prod"
 )
 
 type Config struct {
 	App struct {
-		Name string `yaml:"name" envconfig:"SERVICE_NAME" default:"glitchr"`
-		Port string `yaml:"port" envconfig:"SERVICE_PORT" default:"8080"`
-		Host string `yaml:"host" envconfig:"SERVICE_HOST" default:"0.0.0.0"`
-		Env  Env    `yaml:"env" envconfig:"SERVICE_ENV" default:"dev"`
+		Name string   `yaml:"name" envconfig:"SERVICE_NAME" default:"glitchr"`
+		Port string   `yaml:"port" envconfig:"SERVICE_PORT" default:"8080"`
+		Host string   `yaml:"host" envconfig:"SERVICE_HOST" default:"0.0.0.0"`
+		Env  core.Env `yaml:"env" envconfig:"SERVICE_ENV" default:"dev"`
 	} `yaml:"app"`
 	Log struct {
 		Level *string `yaml:"level" envconfig:"LOG_LEVEL" default:"INFO"`

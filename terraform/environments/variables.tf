@@ -25,3 +25,11 @@ variable "user_pool" {
 variable "user_pool_client" {
   type = string
 }
+
+variable "raw_bucket" {
+  type = string
+}
+
+variable "main_bucket" {
+  type = string
+}

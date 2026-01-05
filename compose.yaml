@@ -3,7 +3,7 @@ services:
     container_name: glitch-backend
     build:
       context: .
-      dockerfile: .docker/backend.local.dockerfile
+      dockerfile: docker/backend.local.dockerfile
     ports:
       - "8080:8080"
       - "2121:2121"
