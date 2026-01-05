@@ -5,6 +5,8 @@ site_author = "Subroto Kumar"
 copyright = """
 Copyright &copy; 2025 Subroto Kumar
 """
+repo_url = "https://github.com/subrotokumar/glitchr"
+repo_name = "subrotokumar/glitchr"
 
 # nav = [
 #   { "Get started" = "index.md" },
@@ -223,4 +225,5 @@ toggle.name = "Switch to light mode"
 #icon = "fontawesome/brands/github"
 #link = "https://github.com/user/repo"
 
-
+[project.extra]
+generator = false
