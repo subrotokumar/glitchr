@@ -1,7 +1,3 @@
-variable "raw_bucket" {
-  type = string
-}
-
-variable "main_bucket" {
+variable "bucket" {
   type = string
 }

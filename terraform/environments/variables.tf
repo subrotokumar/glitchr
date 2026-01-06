@@ -26,10 +26,14 @@ variable "user_pool_client" {
   type = string
 }
 
-variable "raw_bucket" {
+variable "raw_media_bucket" {
   type = string
 }
 
-variable "main_bucket" {
+variable "processed_media_bucket" {
+  type = string
+}
+
+variable "storage_trigger_queue" {
   type = string
 }
