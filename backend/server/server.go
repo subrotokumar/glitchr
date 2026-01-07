@@ -7,7 +7,7 @@ import (
 
 	validation "github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
-	"gitlab.com/subrotokumar/glitchr/internal/config"
+	"gitlab.com/subrotokumar/glitchr/backend/config"
 	idp "gitlab.com/subrotokumar/glitchr/pkg/idp"
 	"gitlab.com/subrotokumar/glitchr/pkg/logger"
 )

@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/prometheus/client_golang/prometheus"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	_ "gitlab.com/subrotokumar/glitchr/api"
+	_ "gitlab.com/subrotokumar/glitchr/backend/swagger"
 )
 
 func (s *Server) Mux() *echo.Echo {

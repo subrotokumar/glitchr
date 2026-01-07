@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/labstack/gommon/log"
-	"gitlab.com/subrotokumar/glitchr/internal/server"
+	"gitlab.com/subrotokumar/glitchr/backend/server"
 )
 
 //	@title			Glitchr

@@ -1,7 +1,7 @@
-variable "storage_trigger_queue" {
+variable "sqs_queue" {
   type = string
 }
 
-variable "s3_bucket_arn" {
+variable "bucket_arn" {
   type = string
 }

@@ -1,4 +1,4 @@
-variable "s3_bucket_id" {
+variable "bucket" {
   type = string
 }
 

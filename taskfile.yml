@@ -14,12 +14,12 @@ tasks:
   backend:build:
     silent: true
     desc: "Build executable for backend"
-    cmds: [go build -o ./tmp/main ./cmd/server]
+    cmds: [go build -o ./tmp/backend ./backend]
 
   backend:run:
     silent: true
     desc: "Run the Go server locally"
-    cmds: [go run ./cmd/server]
+    cmds: [go run ./backend]
 
   backend:dev:
     dir: .
@@ -69,9 +69,28 @@ tasks:
 
   tf:apply:
     silent: true
+    var:
+      approve: false
     dir: terraform/environments
     desc: "Apply Terraform/OpenTofu plan to the environment"
-    cmds: [tofu apply]
+    cmds: 
+      - tofu apply
+  
+  tf:apply:auto:
+    silent: true
+    dir: terraform/environments
+    desc: "Apply Terraform/OpenTofu plan (auto approve)"
+    cmds:
+      - tofu apply --auto-approve
+  
+  tf:unlock:
+    silent: true
+    dir: terraform/environments
+    var:
+      ID: 
+    desc: "Apply Terraform/OpenTofu plan (auto approve)"
+    cmds:
+      - tofu force-unlock {{.ID}}
 
   tf:destroy:
     silent: true
@@ -114,6 +133,17 @@ tasks:
         swag init \
         --parseInternal \
         --packageName swagger \
-        --dir ./internal/server \
-        -g ../../cmd/server/main.go \
-        -o ./api
+        --dir ./backend/server \
+        -g ../main.go \
+        -o ./backend/api
+
+  work:sync:
+    cmds: 
+      - cd libs/core && go mod tidy
+      - cd libs/idp && go mod tidy
+      - cd libs/logger && go mod tidy
+      - cd libs/queue && go mod tidy
+      - cd libs/storage && go mod tidy
+      - cd backend && go mod tidy
+      - cd consumer && go mod tidy
+

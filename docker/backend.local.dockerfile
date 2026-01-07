@@ -10,8 +10,7 @@ RUN apk add --no-cache git && \
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY cmd/ .
-COPY internal/ .
+COPY backend/ ./backend/
 
 # Packages
 COPY pkg/core/ ./pkg/core/
