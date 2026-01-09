@@ -1,9 +1,8 @@
-<center>
-<img src="docs/assets/logo.png" height="100">
 
-<h1>Glitchr</h1>
+# Glitchr
 
-<h3>End-to-End Adaptive Bitrate Video Streaming Platform with Automated</h3>
-<center>
+#### End-to-End Adaptive Bitrate Video Streaming Platform with Automated Multi-Quality Transcoding
 
 [Documentation](https://subrotokumar.github.io/glitchr/)
+
+![](./docs/assets/architecture.svg)
