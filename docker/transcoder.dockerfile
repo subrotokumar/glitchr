@@ -10,12 +10,12 @@ COPY ./libs/core/ ./libs/core/
 COPY ./libs/storage/ ./libs/storage/
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -o app ./transcoder/main.go
+    go build -o transcoder ./transcoder/main.go
 
 FROM jrottenberg/ffmpeg:8-alpine
 
 WORKDIR /app
-COPY --from=builder /app/app /app/transcoder
+COPY --from=builder /app/transcoder /app/transcoder
 RUN mkdir download output
 USER nonroot:nonroot
-ENTRYPOINT ["/app/app"]
+ENTRYPOINT ["/app/transcoder"]

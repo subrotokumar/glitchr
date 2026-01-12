@@ -13,13 +13,6 @@ type Config struct {
 	Log struct {
 		Level *string `yaml:"level" envconfig:"LOG_LEVEL" default:"INFO"`
 	} `yaml:"log"`
-	Database struct {
-		Username string `yaml:"user" envconfig:"DB_USERNAME"`
-		Password string `yaml:"pass" envconfig:"DB_PASSWORD"`
-		Host     string `yaml:"host" envconfig:"DB_HOST"`
-		Port     string `yaml:"port" envconfig:"DB_PORT"`
-		DbName   string `yaml:"name" envconfig:"DB_NAME"`
-	} `yaml:"database"`
 	Aws struct {
 		Region          string `yaml:"region" envconfig:"AWS_REGION" default:"ap-south-1"`
 		AccessKeyID     string `yaml:"secret_id" envconfig:"AWS_ACCESS_KEY_ID"`
@@ -29,5 +22,17 @@ type Config struct {
 		Bucket string `yaml:"bucket" envconfig:"S3_BUCKET"`
 		Key    string `yaml:"key" envconfig:"S3_KEY"`
 	} `yaml:"s3"`
-	Events storage.S3Event `yaml:"events" envconfig:"SQS_MESSAGE"`
+	Events storage.S3Event `yaml:"events" envconfig:"SQS_MESSAGE" required:"true"`
+}
+
+func (cfg *Config) Bucket() string {
+	return cfg.Events.Records[0].S3.Bucket.Name
+}
+
+func (cfg *Config) Key() string {
+	return cfg.Events.Records[0].S3.Object.Key
+}
+
+func (cfg *Config) ObjectSize() int64 {
+	return cfg.Events.Records[0].S3.Object.Size
 }

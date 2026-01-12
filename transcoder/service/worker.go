@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -20,6 +21,8 @@ type Service struct {
 	cfg     config.Config
 	log     *core.Logger
 	storage *storage.Storage
+	bucket  string
+	path    string
 }
 
 func New() *Service {
@@ -34,12 +37,6 @@ func New() *Service {
 		log:     log,
 		storage: storage,
 	}
-}
-
-func (s *Service) Run() error {
-	s.log.Info("Transcorder service started")
-	// Implement the core logic of the transcorder service here
-	return nil
 }
 
 func (s *Service) Download(ctx context.Context, destPath string) error {
@@ -73,9 +70,22 @@ func (s *Service) Download(ctx context.Context, destPath string) error {
 }
 
 func (s *Service) Transcode(ctx context.Context, inputPath, outputDir string) error {
+
+	s.log.Info("Transcoding media", "input", inputPath, "output", outputDir)
+
 	cmdArgs := ffmpeg.DASH_CMD(inputPath, outputDir)
 	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...)
-	return cmd.Run()
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return err
+	}
+	for _, line := range strings.Split(string(output), "\n") {
+		if line == "" {
+			continue
+		}
+		s.log.Debug("Transcoding media", "output", line)
+	}
+	return nil
 }
 
 func (s *Service) Upload(ctx context.Context, sourceDir string) error {
@@ -125,7 +135,7 @@ func (s *Service) UpdateVideo(ctx context.Context) error {
 }
 
 func (s *Service) Process(ctx context.Context) error {
-	workDir := "/tmp/workspace"
+	workDir := "./tmp/workspace"
 	if err := os.MkdirAll(workDir, 0o755); err != nil {
 		return fmt.Errorf("create work dir: %w", err)
 	}
@@ -155,8 +165,17 @@ func (s *Service) Process(ctx context.Context) error {
 	if err := s.Upload(ctx, outputPath); err != nil {
 		return fmt.Errorf("upload files: %w", err)
 	}
-	if err := s.UpdateVideo(ctx); err != nil {
-		return fmt.Errorf("update video: %w", err)
-	}
+	// if err := s.UpdateVideo(ctx); err != nil {
+	// 	return fmt.Errorf("update video: %w", err)
+	// }
 	return nil
+}
+
+func (s *Service) Run(ctx context.Context) {
+	s.log.Info("Transcorder worker started processing")
+	if err := s.Process(ctx); err != nil {
+		s.log.Error("Error processing video", "error", err)
+	} else {
+		s.log.Info("Video processing completed successfully")
+	}
 }

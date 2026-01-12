@@ -10,14 +10,14 @@ COPY ./libs/core/ ./libs/core/
 COPY ./libs/idp/ ./libs/idp/
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -o app ./backend/main.go
+    go build -o backend ./backend/main.go
 
 
 # ---------- Runtime ----------
 FROM gcr.io/distroless/static-debian12
 
 WORKDIR /app
-COPY --from=builder /app/app /app/app
+COPY --from=builder /app/backend /app/backend
 
 USER nonroot:nonroot
-ENTRYPOINT ["/app/app"]
+ENTRYPOINT ["/app/backend"]

@@ -1,7 +1,12 @@
 package main
 
-import "gitlab.com/subrotokumar/glitchr/transcoder/service"
+import (
+	"context"
+
+	"gitlab.com/subrotokumar/glitchr/transcoder/service"
+)
 
 func main() {
-	service.New().Run()
+	worker := service.New()
+	worker.Run(context.Background())
 }
