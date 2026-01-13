@@ -17,11 +17,8 @@ type Config struct {
 		Region          string `yaml:"region" envconfig:"AWS_REGION" default:"ap-south-1"`
 		AccessKeyID     string `yaml:"secret_id" envconfig:"AWS_ACCESS_KEY_ID"`
 		SecretAccessKey string `yaml:"secret_key" envconfig:"AWS_SECRET_ACCESS_KEY"`
+		ProcessedBucket string `yaml:"processed_bucket" envconfig:"PROCESSED_BUCKET" required:"true"`
 	} `yaml:"aws"`
-	S3 struct {
-		Bucket string `yaml:"bucket" envconfig:"S3_BUCKET"`
-		Key    string `yaml:"key" envconfig:"S3_KEY"`
-	} `yaml:"s3"`
 	Events storage.S3Event `yaml:"events" envconfig:"SQS_MESSAGE" required:"true"`
 }
 

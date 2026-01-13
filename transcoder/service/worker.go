@@ -47,8 +47,8 @@ func (s *Service) Download(ctx context.Context, destPath string) error {
 	}
 
 	out, err := s.storage.Client().GetObject(ctx, &s3.GetObjectInput{
-		Bucket: aws.String(s.cfg.S3.Bucket),
-		Key:    aws.String(s.cfg.S3.Key),
+		Bucket: aws.String(s.cfg.Bucket()),
+		Key:    aws.String(s.cfg.Key()),
 	})
 	if err != nil {
 		return fmt.Errorf("get object failed: %w", err)
@@ -110,9 +110,10 @@ func (s *Service) Upload(ctx context.Context, sourceDir string) error {
 		}
 		defer file.Close()
 
+		lastIndex := strings.LastIndex(s.cfg.Bucket(), string(os.PathSeparator)) + 1
 		_, err = s.storage.Client().PutObject(ctx, &s3.PutObjectInput{
-			Bucket: aws.String(s.cfg.S3.Bucket),
-			Key:    aws.String(relPath),
+			Bucket: aws.String(s.cfg.Bucket()),
+			Key:    aws.String(s.cfg.Key()[:lastIndex] + relPath),
 			Body:   file,
 		})
 		if err != nil {
@@ -128,9 +129,8 @@ func (s *Service) Upload(ctx context.Context, sourceDir string) error {
 	return nil
 }
 
-func (s *Service) UpdateVideo(ctx context.Context) error {
+func (s *Service) UpdateMetadata(ctx context.Context) error {
 	s.log.Info("Updating video metadata in database")
-	// Implement the logic to update video metadata in the database
 	return nil
 }
 
@@ -162,12 +162,13 @@ func (s *Service) Process(ctx context.Context) error {
 	if err := s.Transcode(ctx, inputPath, outputPath); err != nil {
 		return fmt.Errorf("transcode video: %w", err)
 	}
+
 	if err := s.Upload(ctx, outputPath); err != nil {
 		return fmt.Errorf("upload files: %w", err)
 	}
-	// if err := s.UpdateVideo(ctx); err != nil {
-	// 	return fmt.Errorf("update video: %w", err)
-	// }
+	if err := s.UpdateMetadata(ctx); err != nil {
+		return fmt.Errorf("update video: %w", err)
+	}
 	return nil
 }
 
