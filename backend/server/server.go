@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"gitlab.com/subrotokumar/glitchr/backend/config"
 	"gitlab.com/subrotokumar/glitchr/libs/core"
+	"gitlab.com/subrotokumar/glitchr/libs/db"
 	idp "gitlab.com/subrotokumar/glitchr/libs/idp"
 )
 
@@ -29,6 +30,7 @@ type (
 		idp     idp.IdentityProvider
 		handler *http.Server
 		log     *core.Logger
+		store   *db.SQLStore
 	}
 	Ctx struct {
 		echo.Context
@@ -46,10 +48,17 @@ func NewHTTPServer() *Server {
 
 	logger := core.NewLogger(cfg.App.Env, cfg.App.Name, nil)
 
+	pgxpool, err := db.NewPgxPool(cfg.ConnectionUrl(), int32(cfg.Database.MinConn), int32(cfg.Database.MinConn))
+	if err != nil {
+		log.Fatalf("Failed to get pgxpool: %s", err.Error())
+	}
+	dbStore := db.NewSQLStore(pgxpool)
+
 	srv := &Server{
-		cfg: cfg,
-		idp: idp.NewIndentityProvider(cfg.Aws.Region, cfg.Cognito.ClientID, cfg.Cognito.ClientSecret),
-		log: logger,
+		cfg:   cfg,
+		idp:   idp.NewIndentityProvider(cfg.Aws.Region, cfg.Cognito.ClientID, cfg.Cognito.ClientSecret),
+		log:   logger,
+		store: dbStore,
 	}
 	srv.handler = &http.Server{
 		Addr:    cfg.App.Host + ":" + cfg.App.Port,
@@ -60,6 +69,7 @@ func NewHTTPServer() *Server {
 }
 
 func (s *Server) Run() error {
+	defer s.store.Close()
 	s.log.Info("Server running at " + s.cfg.App.Host + ":" + s.cfg.App.Port)
 	return s.handler.ListenAndServe()
 }
