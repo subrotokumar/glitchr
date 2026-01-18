@@ -12,5 +12,6 @@ COPY ./backend/ ./backend/
 COPY ./libs/core/ ./libs/core/
 COPY ./libs/core/ ./libs/core/
 COPY ./libs/idp/ ./libs/idp/
+COPY ./libs/db/ ./libs/db/
 COPY .air.toml .
 CMD ["air"]

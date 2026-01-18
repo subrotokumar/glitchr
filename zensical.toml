@@ -8,11 +8,6 @@ Copyright &copy; 2025 Subroto Kumar
 repo_url = "https://github.com/subrotokumar/glitchr"
 repo_name = "subrotokumar/glitchr"
 
-# nav = [
-#   { "Get started" = "index.md" },
-#   { "Markdown in 5min" = "markdown.md" },
-# ]
-
 nav = [
     { "Overview" = "index.md" },
     { "Architecture" = "architecture.md" },
@@ -26,6 +21,9 @@ nav = [
     { "Infrastructure" = "infra.md" },
     { "Local Development" = "local-dev.md" },
     { "Operations" = "operations.md" },
+    { "CI/CD" = [
+        "cicd/variables.md",
+    ] }
 ]
 
 
@@ -227,3 +225,6 @@ toggle.name = "Switch to light mode"
 
 [project.extra]
 generator = false
+
+[project.markdown_extensions.toc]
+toc_depth = 0

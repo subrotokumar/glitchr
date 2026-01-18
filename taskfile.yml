@@ -58,7 +58,7 @@ tasks:
   
   clean:
     silent: true
-    cmds: [rm -rf site .venv tmp]
+    cmds: [rm -rf site .venv tmp coverage.html coverage.out coverage.txt]
   
   encrypt:
     silent: true
@@ -155,3 +155,26 @@ tasks:
       - cd backend && go mod tidy
       - cd consumer && go mod tidy
 
+  sonar:
+    var:
+      SONAR_ORG: ${SONAR_ORG}
+      SONAR_PROJECT_KEY: ${SONAR_PROJECT_KEY}
+    cmds: 
+      - |
+        sonar-scanner \
+        -Dsonar.organization={{.SONAR_ORG}} \
+        -Dsonar.projectKey={{.SONAR_PROJECT_KEY}} \
+        -Dsonar.projectVersion=Yoyo \
+        -Dsonar.sources=. \
+        -Dsonar.exclusions="**/*_test.go,**/vendor/**,**/testdata/**,**/tmp/**,**/docs/**,**/swagger/**,**/migration/**" \
+        -Dsonar.tests=. \
+        -Dsonar.test.inclusions="**/*_test.go" \
+        -Dsonar.go.coverage.reportPaths=coverage.out \
+        -Dsonar.go.tests.reportPaths=test-report.json \
+        -Dsonar.sourceEncoding=UTF-8 \
+        -Dsonar.scm.provider=git \
+        -Dsonar.scm.revision=${CI_COMMIT_SHA} \
+        -Dsonar.links.homepage=${CI_PROJECT_URL} \
+        -Dsonar.links.ci=${CI_PIPELINE_URL} \
+        -Dsonar.links.scm=${CI_REPOSITORY_URL} \
+        -Dsonar.branch.name=${CI_COMMIT_REF_NAME}

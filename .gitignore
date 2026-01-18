@@ -327,3 +327,9 @@ terraform.rc
 
 # SonarCube
 .scannerwork
+
+# Gosec
+gosec-report.json
+
+# Data
+data/
